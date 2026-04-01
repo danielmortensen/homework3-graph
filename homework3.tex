@@ -67,6 +67,20 @@ Therefore $\chi'(G) = k + 1 = \Delta(G) + 1$.
 
 \medskip
 
+\begin{proof}
+Let $G$ be a graph with $\Delta(G) = \Delta$, and let $v$ be a vertex with $\deg_G(v) < \Delta$. Let $T$ be a spanning tree of $G$ rooted at $v$.
+
+Order the vertices $v_1, v_2, \ldots, v_n$ so that leaves of $T$ come first and the root $v$ comes last. Specifically, use a reverse breadth-first search ordering: vertices at the greatest depth in $T$ are listed first, and $v = v_n$ is listed last. (Within the same depth level, the order is arbitrary.)
+
+We apply the greedy coloring algorithm with a palette of $\Delta$ colors, coloring vertices in the order $v_1, v_2, \ldots, v_n$.
+
+\textbf{Non-root vertices:} Consider any vertex $v_i \neq v$. In the spanning tree $T$, the parent of $v_i$ (its neighbor on the path toward the root $v$) appears later in the ordering, so it is uncolored when we color $v_i$. Thus, at most $\deg_G(v_i) - 1 \leq \Delta - 1$ of $v_i$'s neighbors in $G$ are already colored. Since we have $\Delta$ colors available, at least one color is unused among $v_i$'s colored neighbors, and the greedy algorithm assigns it.
+
+\textbf{Root vertex:} When we color $v = v_n$ last, all of its neighbors in $G$ may already be colored. However, $\deg_G(v) < \Delta$, so $v$ has at most $\Delta - 1$ neighbors. Therefore, at most $\Delta - 1$ colors appear among its neighbors, and at least one of the $\Delta$ colors remains available.
+
+In both cases, the greedy algorithm never requires more than $\Delta$ colors. Therefore $\chi(G) \leq \Delta(G)$.
+\end{proof}
+
 \textbf{4)} Show that every $k$-chromatic graph $G$ has at least $\binom{k}{2}$ edges.
 
 \begin{center}
