@@ -2,6 +2,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.8em}
@@ -83,6 +84,41 @@ In both cases, the greedy algorithm never requires more than $\Delta$ colors. Th
 
 \textbf{4)} Show that every $k$-chromatic graph $G$ has at least $\binom{k}{2}$ edges.
 
+\begin{proof}
+Organize the vertices so that all vertices of the same ``color'' are in a single group, so that there are no inter-group adjacencies.
+
+
+\begin{center}
+\begin{tikzpicture}[every node/.style={draw, shape=ellipse, minimum width=1.2cm, minimum height=0.6cm}]
+  \node[label={above:Color 1}] (c1) at (0,2) {};
+  \node[label={left:Color 2}] (c2) at (-2,0) {};
+  \node[label={below:Color 3}] (c3) at (0,-2) {};
+  \node[label={right:Color $k$}] (ck) at (2,0) {};
+  \node[draw=none, minimum width=0pt, minimum height=0pt] at (1.4,-1.4) {$\cdots$};
+\end{tikzpicture}
+\end{center}
+
+Suppose there are fewer than $\binom{k}{2}$ edges so that there exists at least one pair of colors that are not adjacent.
+
+\begin{center}
+\begin{tikzpicture}[every node/.style={draw, shape=ellipse, minimum width=1.2cm, minimum height=0.6cm}]
+  \node[label={above:Color 1}] (c1) at (0,2) {};
+  \node[label={left:Color 2}] (c2) at (-2,0) {};
+  \node[label={below:Color 3}] (c3) at (0,-2) {};
+  \node[label={right:Color $k$}] (ck) at (2,0) {};
+  \node[draw=none, minimum width=0pt, minimum height=0pt] at (1.4,-1.4) {$\cdots$};
+  \draw (c1) -- (c2);
+  \draw (c1) -- (c3);
+  \draw (c1) -- (ck);
+  \draw[dashed, opacity=0.3] (c2) -- (c3);
+  \draw (c2) -- (ck);
+  \draw (c3) -- (ck);
+\end{tikzpicture}
+\end{center}
+
+If that were the case, no vertices with colors 2 or 3 are incident and hence, colors 2 and 3 can be combined so that the chromatic number is $k - 1$. This contradicts the assumption that $G$ is $k$-chromatic. Therefore, every pair of color classes must be connected by at least one edge, giving at least $\binom{k}{2}$ edges.
+\end{proof}
+
 \begin{center}
 {\large\bfseries\color{red} Planar Graphs}
 \end{center}
@@ -99,26 +135,67 @@ In both cases, the greedy algorithm never requires more than $\Delta$ colors. Th
   \node[label=below:$f$] (f) at (1,0) {};
   \node[label=below:$g$] (g) at (2,0) {};
   \node[label=below:$h$] (h) at (3,0) {};
-  \foreach \i in {a,b,c,d}
-    \foreach \j in {e,f,g,h}
-      \draw (\i) -- (\j);
+  \draw (a) -- (f); \draw (a) -- (g); \draw (a) -- (h);
+  \draw (b) -- (e); \draw (b) -- (g); \draw (b) -- (h);
+  \draw (c) -- (e); \draw (c) -- (f); \draw (c) -- (h);
+  \draw (d) -- (e); \draw (d) -- (f); \draw (d) -- (g);
 \end{tikzpicture}
 \end{center}
 
 \begin{enumerate}
 \item[a)] Show that the graph above is planar by redrawing it as plane graph and then verify the Euler's formula for the plane graph.
 
+\begin{center}
+\begin{tikzpicture}[scale=1.5, every node/.style={circle, fill=black, inner sep=1.5pt}]
+  % Outer square
+  \node[label=above left:$f$] (f) at (-2,2) {};
+  \node[label=above right:$d$] (d) at (2,2) {};
+  \node[label=below right:$e$] (e) at (2,-2) {};
+  \node[label=below left:$c$] (c) at (-2,-2) {};
+  % Inner square
+  \node[label=above left:$a$] (a) at (-1,1) {};
+  \node[label=above right:$g$] (g) at (1,1) {};
+  \node[label=below right:$b$] (b) at (1,-1) {};
+  \node[label=below left:$h$] (h) at (-1,-1) {};
+  % Edges
+  \draw (a) -- (f); \draw (a) -- (g); \draw (a) -- (h);
+  \draw (b) -- (e); \draw (b) -- (g); \draw (b) -- (h);
+  \draw (c) -- (e); \draw (c) -- (f); \draw (c) -- (h);
+  \draw (d) -- (e); \draw (d) -- (f); \draw (d) -- (g);
+\end{tikzpicture}
+\end{center}
+
+The plane graph has $n = 8$ vertices, $m = 12$ edges, and $f = 6$ faces (including the unbounded face). Euler's formula gives
+\[n - m + f = 8 - 12 + 6 = 2.\]
+
 \item[b)] The Euler's Formula for connected graphs says that
 \[n - m + f = 2\]
 where $n, m, f$ are the number of vertices, edges and faces respectively. Extend this formula to all graphs by showing that
 \[n - m + f = k + 1\]
 where $k$ is the number of connected components.
+
+\begin{proof}
+For a single connected component, Euler's formula gives $n_i - m_i + f_i = 2 = 1 + 1$, where the second $1$ accounts for the unbounded face. Excluding the unbounded face, each connected component satisfies $n_i - m_i + f_i = 1$, where $f_i$ counts only the bounded faces of component $i$.
+
+All connected components share the same single unbounded face. Summing over all $k$ components:
+\[\sum_{i=1}^{k} n_i - \sum_{i=1}^{k} m_i + \sum_{i=1}^{k} f_i = k.\]
+Adding the one shared unbounded face gives
+\[n - m + f = k + 1.\]
+\end{proof}
 \end{enumerate}
 
 \textbf{6)} Let $G$ be a simple planar graph.
 
 \begin{enumerate}
 \item[a)] Show that $G$ has a vertex $v$ with degree less than 6. (\textit{Hint: use the bound $m \leq 3n - 6$ proved in class.})
+
+\begin{proof}
+Suppose for contradiction that every vertex has degree at least $6$. Since each vertex has degree at least $6$, there are at least $7$ vertices. By the handshaking lemma,
+\[2m = \sum_{v} \deg(v) \geq 6n \quad \Longrightarrow \quad m \geq 3n.\]
+Substituting into the bound $m \leq 3n - 6$:
+\[m \leq 3n - 6 \leq m - 6,\]
+so $m \leq m - 6$, which is a contradiction. Therefore $G$ has a vertex with degree less than $6$.
+\end{proof}
 
 \item[b)] Show that $\chi(G) \leq 6$. (\textit{Hint: use part (a) and induction.})
 \end{enumerate}
