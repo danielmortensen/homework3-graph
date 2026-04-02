@@ -2,6 +2,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{tikz}
+\usepackage[normalem]{ulem}
 \usetikzlibrary{shapes.geometric}
 
 \setlength{\parindent}{0pt}
@@ -198,34 +199,44 @@ so $m \leq m - 6$, which is a contradiction. Therefore $G$ has a vertex with deg
 \end{proof}
 
 \item[b)] Show that $\chi(G) \leq 6$. (\textit{Hint: use part (a) and induction.})
+
+\begin{proof}
+We proceed by induction on the number of vertices $n$.
+
+\textbf{Base case:} If $n = 1$, then $G$ has a single vertex and $\chi(G) = 1 \leq 6$.
+
+\textbf{Inductive step:} Assume that every simple planar graph with fewer than $n$ vertices satisfies $\chi(G) \leq 6$. Let $G$ be a simple planar graph with $n$ vertices. By part (a), $G$ has a vertex $v$ with $\deg(v) \leq 5$. Consider the graph $G' = G - v$ obtained by removing $v$ and all its incident edges. Since $G'$ is a simple planar graph with $n - 1$ vertices, the inductive hypothesis gives $\chi(G') \leq 6$, so $G'$ can be properly colored with at most $6$ colors.
+
+Now restore $v$. Since $v$ has at most $5$ neighbors, they use at most $5$ of the $6$ colors. Therefore at least one of the $6$ colors is available for $v$, and we obtain a proper coloring of $G$ with at most $6$ colors. Hence $\chi(G) \leq 6$.
+\end{proof}
 \end{enumerate}
 
-\textbf{7)} Let $G$ be a simple graph.
+\sout{\textbf{7)} Let $G$ be a simple graph.}
 
 \begin{enumerate}
-\item[b)] Prove that if $G$ has at least 11 vertices, then either $G$ or its complement $\overline{G}$ must be nonplanar.
+\item[b)] \sout{Prove that if $G$ has at least 11 vertices, then either $G$ or its complement $\overline{G}$ must be nonplanar.}
 
-\textit{Hint: you may use the result $m \leq 3n - 6$ that we proved in class.}
+\sout{\textit{Hint: you may use the result $m \leq 3n - 6$ that we proved in class.}}
 \end{enumerate}
 
-\textbf{8)} Let $G$ be a \underline{simple connected} planar graph.
+\sout{\textbf{8)} Let $G$ be a \underline{simple connected} planar graph.}
 
 \begin{enumerate}
-\item[a)] Prove that if $G$ has less than 12 vertices, then $G$ has a vertex of degree at most 4.
+\item[a)] \sout{Prove that if $G$ has less than 12 vertices, then $G$ has a vertex of degree at most 4.}
 
-\textit{Hint: you may use the result $m \leq 3n - 6$ that we proved in class.}
+\sout{\textit{Hint: you may use the result $m \leq 3n - 6$ that we proved in class.}}
 
-\item[b)] Prove that if $G$ has less than 30 edges, then $G$ has a vertex of degree at most 4.
+\item[b)] \sout{Prove that if $G$ has less than 30 edges, then $G$ has a vertex of degree at most 4.}
 
-\textit{Hint: you may use part (a) to prove part (b).}
+\sout{\textit{Hint: you may use part (a) to prove part (b).}}
 \end{enumerate}
 
 \begin{center}
 {\large\bfseries\color{red} Line Graphs}
 \end{center}
 
-\textbf{9)} Let $L(G)$ be the line graph of $G$.\\
-\hspace*{1.5em}Prove that $G \cong L(G)$ if and only if $G$ is 2-regular.
+\sout{\textbf{9)} Let $L(G)$ be the line graph of $G$.}\\
+\hspace*{1.5em}\sout{Prove that $G \cong L(G)$ if and only if $G$ is 2-regular.}
 
 \begin{center}
 {\large\bfseries\color{red} Connectivity}
@@ -236,8 +247,32 @@ so $m \leq m - 6$, which is a contradiction. Therefore $G$ has a vertex with deg
 \begin{enumerate}
 \item[a)] Prove that $\kappa(G) \leq \lambda(G)$.
 
+\begin{proof}
+If $G$ is a complete graph $K_n$, then $\kappa(G) = \lambda(G) = n - 1$, and the inequality holds. So assume $G$ is not complete.
+
+Let $S = \{e_1, e_2, \ldots, e_\lambda\}$ be a minimum edge cut of size $\lambda = \lambda(G)$. Removing $S$ partitions $V(G)$ into two nonempty sets $A$ and $B$, where every edge of $S$ has one endpoint in $A$ and one in $B$.
+
+For each edge $e_i \in S$, choose the endpoint $w_i$ that lies in $A$. Let $W = \{w_1, w_2, \ldots, w_\lambda\}$ (duplicates removed, so $|W| \leq \lambda$).
+
+\textbf{Case 1:} $W = A$, i.e., every vertex in $A$ is an endpoint of some cut edge. Since $G$ is not complete, there exist non-adjacent vertices. Pick any vertex $a \in A$. Since every vertex in $B$ is reachable from $a$ only through cut edges (whose $A$-endpoints all lie in $W$), removing the set $W \setminus \{a\}$ from $G$ disconnects any vertex in $B$ that is not adjacent to $a$ from $a$ (such a vertex exists because $G$ is not complete and $S$ is a minimum edge cut). Thus $\kappa(G) \leq |W \setminus \{a\}| \leq \lambda - 1 < \lambda$.
+
+\textbf{Case 2:} $W \subsetneq A$, i.e., there exists a vertex $a \in A \setminus W$. Then $a$ is not an endpoint of any cut edge, so every edge from $a$ goes to another vertex in $A$. After removing $W$, vertex $a$ has no path to any vertex in $B$ (since every edge between $A$ and $B$ had its $A$-endpoint in $W$, which has been removed). So $G - W$ is disconnected, and $\kappa(G) \leq |W| \leq \lambda$.
+
+In both cases, $\kappa(G) \leq \lambda(G)$.
+\end{proof}
+
 \item[b)] Show that the difference between $\kappa(G)$ and $\lambda(G)$ can be arbitrarily large.\\
 (i.e., for any given $r \in \mathbb{Z}^+$, construct a graph $G$ with $\lambda(G) - \kappa(G) = r$).
+
+\begin{proof}
+Given $r \in \mathbb{Z}^+$, construct $G$ as follows. Let $A$ and $B$ be two copies of the complete graph $K_{r+1}$, and let $v$ be a new vertex adjacent to every vertex in $A$ and every vertex in $B$. There are no edges between $A$ and $B$ except through $v$.
+
+\textbf{Vertex connectivity:} Removing $v$ alone disconnects $G$ into the two cliques $A$ and $B$, so $\kappa(G) = 1$.
+
+\textbf{Edge connectivity:} To disconnect $G$, we must separate some vertex from the rest. Since $A$ and $B$ are each complete graphs on $r+1$ vertices, disconnecting a vertex within $A$ or $B$ from its own clique requires cutting at least $r$ internal edges plus its edge to $v$, for a total of at least $r+1$. On the other hand, separating $A$ from $\{v\} \cup B$ requires cutting all $r+1$ edges from $v$ to $A$. Thus $\lambda(G) = r + 1$.
+
+Therefore $\lambda(G) - \kappa(G) = (r+1) - 1 = r$.
+\end{proof}
 \end{enumerate}
 
 \end{document}
